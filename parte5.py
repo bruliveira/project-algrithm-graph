@@ -150,5 +150,4 @@ grafo = [[0, 1, 2, INF],
         [INF, 2, INF, 0]
         ]
 no = algoritmoFloydWarshall(grafo)
-imprimirMatrizInicio(grafo)
 imprimirMatrizFinal(no)

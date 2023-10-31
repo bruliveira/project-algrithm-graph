@@ -1,39 +1,42 @@
 from collections import deque
 
-def dfs(grafo, vertice, visitados=None, arvore=None, vertice_inicial=None):
-    if visitados is None:
-        visitados = set()
+def dfs(grafo, vertice, arvore=None):
     if arvore is None:
         arvore = {}
-    visitados.add(vertice)
-    if vertice_inicial is not None and vertice not in arvore:
-        arvore[vertice] = vertice_inicial
-    for vizinho in grafo[vertice]:
-        if vizinho not in visitados:
-            dfs(grafo, vizinho, visitados, arvore, vertice)
+    pilha = [vertice]
+    visita = set()
+
+    while pilha:
+        atual = pilha.pop()
+        if atual not in visita:
+            visita.add(atual)
+            for vizinho in grafo[atual]:
+                if vizinho not in visita:
+                    arvore[vizinho] = atual
+                    pilha.append(vizinho)
     return arvore
 
 def bfs(grafo, vertice_inicial):
     fila = deque([vertice_inicial])
-    visitados = {}
-    # visitados = {vertice_inicial: None}  # O vértice inicial não tem pai na árvore de busca
+    visita = {}
     while fila:
         vertice = fila.popleft()
         for vizinho in grafo[vertice]:
-            if vizinho not in visitados:
-                visitados[vizinho] = vertice  # Registra a aresta na árvore de busca
+            if vizinho not in visita:
+                visita[vizinho] = vertice
                 fila.append(vizinho)
-    return visitados
+    return visita
 
 
 grafo = {
     1: [2, 3],
     2: [4],
     3: [5],
-    4: [],
+    4: [1],
     5: []
 }
 vertice_inicial = 1
+
 arvore_de_buscaBFS = bfs(grafo, vertice_inicial)
 arvore_de_buscaDFS = dfs(grafo, vertice_inicial)
 
